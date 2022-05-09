@@ -10,7 +10,7 @@ var allGuesses = [];
 function startHunch() {
     if (gameStarted === false && allLettersRevealed === false) {
         gameStarted = true;
-        for (var i = 0; i < filteredAnswer.length; i++) {
+        for (var i = 0; i < decrypt(hunch).split(" ").join("").length; i++) {
             revealedLetters.push("");
         }
         document.getElementById("gameText").innerHTML = "You have started the game.";
@@ -34,9 +34,9 @@ function tick() {
 function updateHunch(attemptedGuess) {
     if (attemptedGuess.length === 1) {
         var lettersRevealed = false;
-        for (var i = 0; i < filteredAnswer.length; i++) {
-            if (attemptedGuess.toLowerCase() === filteredAnswer.charAt(i).toLowerCase()) {
-                revealedLetters[i] = filteredAnswer.charAt(i).toLowerCase();
+        for (var i = 0; i < decrypt(hunch).split(" ").join("").length; i++) {
+            if (attemptedGuess.toLowerCase() === decrypt(hunch).split(" ").join("").charAt(i).toLowerCase()) {
+                revealedLetters[i] = decrypt(hunch).split(" ").join("").charAt(i).toLowerCase();
                 revealedLettersCount++;
                 lettersRevealed = true;
             }
@@ -44,17 +44,17 @@ function updateHunch(attemptedGuess) {
         if (lettersRevealed === false) {
             incorrectGuesses.push(attemptedGuess);
         }
-        if (revealedLettersCount === filteredAnswer.length) {
+        if (revealedLettersCount === decrypt(hunch).split(" ").join("").length) {
             gameStarted = false;
             allLettersRevealed = true;
-            document.getElementById("gameText").innerHTML = "You are correct! The answer was <i>" + hunch + "</i>.";
+            document.getElementById("gameText").innerHTML = "You are correct! The answer was <i>" + decrypt(hunch) + "</i>.";
             return true;
         }
     } else {
-        if (attemptedGuess.toLowerCase().split(" ").join("") === filteredAnswer.toLowerCase().split(" ").join("")) {
+        if (attemptedGuess.toLowerCase().split(" ").join("") === decrypt(hunch).split(" ").join("").toLowerCase()) {
             gameStarted = false;
             allLettersRevealed = true;
-            document.getElementById("gameText").innerHTML = "You are correct! The answer was <i>" + hunch + "</i>.";
+            document.getElementById("gameText").innerHTML = "You are correct! The answer was <i>" + decrypt(hunch) + "</i>.";
             return true;
         } else {
             incorrectGuesses.push(attemptedGuess);
@@ -74,6 +74,10 @@ function checkAnswer() {
             document.getElementById("guess").value = "";
             return false;
         }
+    }
+    if (attempt.length === 0) {
+        document.getElementById("gameText").innerHTML = "Invalid guess!";
+        return false;
     }
     for (var i = 0; i < allGuesses.length; i++) {
         if (attempt === allGuesses[i]) {
@@ -110,6 +114,3 @@ function decrypt(encrypt) { //you cheater.
     }
     return newString;
 }
-
-hunch = decrypt(hunch);
-const filteredAnswer = hunch.split(" ").join("");

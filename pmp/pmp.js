@@ -15,7 +15,7 @@ function startGame() {
 
 function tick() {
     if (gameStarted) timer++;
-    if (timer >= updateHintTime) {
+    if (timer >= updateHintTime && allHintsRevealed === false) {
         updateHints();
         timer = 0;
     }
@@ -30,15 +30,15 @@ function updateHints() {
     if (hints.length === 1) {
         revealedHint = 0;
     }
-    revealedHints.push(hints[revealedHint]);
+    revealedHints.push(decrypt(hints[revealedHint]));
     hints.splice(revealedHint, 1);
 }
 
 function checkAnswer() {
-    if (document.getElementById("guess").value.toLowerCase().split(" ").join("") === Pokemon.toLowerCase().split(" ").join("")) {
+    if (document.getElementById("guess").value.toLowerCase().split(" ").join("") === decrypt(Pokemon).toLowerCase().split(" ").join("")) {
         gameStarted = false;
         allHintsRevealed = true;
-        document.getElementById("gameText").innerHTML = "You are correct! The answer was <i>" + Pokemon + "</i>.";
+        document.getElementById("gameText").innerHTML = "You are correct! The answer was <i>" + decrypt(Pokemon) + "</i>.";
     } else {
         document.getElementById("gameText").innerHTML = "Incorrect guess!";
     }
@@ -62,9 +62,4 @@ function decrypt(encrypt) { //you cheater.
         newString = newString.concat(newCharacter);
     }
     return newString;
-}
-
-Pokemon = decrypt(Pokemon);
-for (var i = 0; i < hints.length; i++) {
-    hints[i] = decrypt(hints[i]);
 }

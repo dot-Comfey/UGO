@@ -10,7 +10,7 @@ var allLettersRevealed = false;
 function startOrder() {
     if (gameStarted === false && allLettersRevealed === false) {
         gameStarted = true;
-        for (var i = 0; i < filteredAnswer.length; i++) {
+        for (var i = 0; i < decrypt(order).split(" ").join("").length; i++) {
             revealedLetters.push("");
         }
         updateOrder();
@@ -25,7 +25,7 @@ function tick() {
         timer = 0;
     }
     document.getElementById("output").innerHTML = "<b>" + category + ": " + "</b>" + revealedLetters.join('');
-    if (filteredAnswer.length === revealedLettersCount) {
+    if (decrypt(order).split(" ").join("").length === revealedLettersCount) {
         allLettersRevealed = true;
     }
 }
@@ -33,11 +33,11 @@ function tick() {
 function updateOrder() {
     const revealedLetter = parseInt(Math.random() * (revealedLetters.length - revealedLettersCount)) + 1;
     var letterIndex = 0;
-    for (var i = 0; i < filteredAnswer.length; i++) {
+    for (var i = 0; i < decrypt(order).split(" ").join("").length; i++) {
         if (revealedLetters[i] === "") {
             letterIndex++;
             if (letterIndex === revealedLetter) {
-                revealedLetters[i] = filteredAnswer.charAt(i).toLowerCase();
+                revealedLetters[i] = decrypt(order).split(" ").join("").charAt(i).toLowerCase();
                 return true;
             }
         }
@@ -45,10 +45,10 @@ function updateOrder() {
 }
 
 function checkAnswer() {
-    if (document.getElementById("guess").value.toLowerCase().split(" ").join("") === order.toLowerCase().split(" ").join("")) {
+    if (document.getElementById("guess").value.toLowerCase().split(" ").join("") === decrypt(order).toLowerCase().split(" ").join("")) {
         gameStarted = false;
         allLettersRevealed = true;
-        document.getElementById("gameText").innerHTML = "You are correct! The answer was <i>" + order + "</i>.";
+        document.getElementById("gameText").innerHTML = "You are correct! The answer was <i>" + decrypt(order) + "</i>.";
     } else {
         document.getElementById("gameText").innerHTML = "Incorrect guess!";
     }
@@ -73,6 +73,3 @@ function decrypt(encrypt) { //you cheater.
     }
     return newString;
 }
-
-order = decrypt(order);
-const filteredAnswer = order.split(" ").join("");

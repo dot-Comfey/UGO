@@ -10,7 +10,7 @@ var allLettersRevealed = false;
 function startTossup() {
     if (gameStarted === false && allLettersRevealed === false) {
         gameStarted = true;
-        for (var i = 0; i < filteredAnswer.length; i++) {
+        for (var i = 0; i < decrypt(tossup).split(" ").join("").length; i++) {
             revealedLetters.push("_");
         }
     }
@@ -24,7 +24,7 @@ function tick() {
         revealedLettersCount++;
     }
     document.getElementById("output").innerHTML = "<b>" + category + ": " + "</b>" + revealedLetters.join(' ');
-    if (filteredAnswer.length === revealedLettersCount) {
+    if (decrypt(tossup).split(" ").join("").length === revealedLettersCount) {
         allLettersRevealed = true;
     }
 }
@@ -32,11 +32,11 @@ function tick() {
 function updateTossup() {
     const revealedLetter = parseInt(Math.random() * (revealedLetters.length - revealedLettersCount)) + 1;
     var letterIndex = 0;
-    for (var i = 0; i < filteredAnswer.length; i++) {
+    for (var i = 0; i < decrypt(tossup).split(" ").join("").length; i++) {
         if (revealedLetters[i] === "_") {
             letterIndex++;
             if (letterIndex === revealedLetter) {
-                revealedLetters[i] = filteredAnswer.charAt(i);
+                revealedLetters[i] = decrypt(tossup).split(" ").join("").charAt(i);
                 return true;
             }
         }
@@ -44,10 +44,10 @@ function updateTossup() {
 }
 
 function checkAnswer() {
-    if (document.getElementById("guess").value.toLowerCase().split(" ").join("") === tossup.toLowerCase().split(" ").join("")) {
+    if (document.getElementById("guess").value.toLowerCase().split(" ").join("") === decrypt(tossup).toLowerCase().split(" ").join("")) {
         gameStarted = false;
         allLettersRevealed = true;
-        document.getElementById("gameText").innerHTML = "You are correct! The answer was <i>" + tossup + "</i>.";
+        document.getElementById("gameText").innerHTML = "You are correct! The answer was <i>" + decrypt(tossup) + "</i>.";
     } else {
         document.getElementById("gameText").innerHTML = "Incorrect guess!";
     }
@@ -72,6 +72,3 @@ function decrypt(encrypt) { //you cheater.
     }
     return newString;
 }
-
-tossup = decrypt(tossup);
-const filteredAnswer = tossup.split(" ").join("");
