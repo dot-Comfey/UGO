@@ -50,7 +50,7 @@ setInterval(tick, 10);
 document.getElementById("guess")
     .addEventListener("keyup", function(event) {
     event.preventDefault();
-    if (event.code === 'Enter' && gameStarted === true) {
+    if (event.keyCode === 13 && gameStarted === true) {
         checkAnswer();
     }
 });
