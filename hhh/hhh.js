@@ -198,6 +198,7 @@ var movesLeft = 3;
 var extraGhostMoves = 0;
 var ghostDisplay = [];
 var candiesObtained = 0;
+var allCandiesObtained = false;
 
 function generateMap() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -407,7 +408,7 @@ function moveGhost(ghost) {
                                 if (ghost.type === "Mimikyu") {
                                     extraGhostMoves = 1;
                                 } else {
-                                    document.getElementById("gameText").innerHTML = "You were haunted! Press R to restart.";
+                                    document.getElementById("gameText").innerHTML = "You were haunted! Reload the page to restart.";
                                     haunted = true;
                                 }
                                 break;
@@ -416,7 +417,7 @@ function moveGhost(ghost) {
                         playerLocated = true;
                         if (ghost.type === "Dusclops") {
                             if (Math.abs(ghost.X - playerX) <= 1 && Math.abs(ghost.Y - playerY) <= 1) {
-                                document.getElementById("gameText").innerHTML = "You were haunted! Press R to restart.";
+                                document.getElementById("gameText").innerHTML = "You were haunted! Reload the page to restart.";
                                 haunted = true;
                                 break;
                             }
@@ -477,42 +478,75 @@ function movePlayer(X, Y) {
         nextRound();
     }
     generateMap();
-    document.getElementById("moves").innerHTML = "You have " + movesLeft + " moves left until the next round!";
+    if (!haunted) document.getElementById("moves").innerHTML = "You have " + movesLeft + " moves left until the next round!";
 }
 
 document/*.getElementById("guess")*/
     .addEventListener("keyup", function(event) {
     event.preventDefault();
-    if (haunted === false) {
-        if (event.code === 'Enter') {
-            document.getElementById("gameText").innerHTML = "You have skipped to the next round!";
-            nextRound();
-        }
-        if (event.code === 'ArrowUp') {
-            document.getElementById("gameText").innerHTML = "You have moved 1 space up!";
-            movePlayer(playerX, playerY - 1);
-        }
-        if (event.code === 'ArrowDown') {
-            document.getElementById("gameText").innerHTML = "You have moved 1 space down!";
-            movePlayer(playerX, playerY + 1);
-        }
-        if (event.code === 'ArrowLeft') {
-            document.getElementById("gameText").innerHTML = "You have moved 1 space left!";
-            movePlayer(playerX - 1, playerY);
-        }
-        if (event.code === 'ArrowRight') {
-            document.getElementById("gameText").innerHTML = "You have moved 1 space right!";
-            movePlayer(playerX + 1, playerY);
+    if (allCandiesObtained === false) {
+        if (haunted === false) {
+            if (event.code === 'Enter') {
+                wait();
+            }
+            if (event.code === 'ArrowUp') {
+                moveUp();
+            }
+            if (event.code === 'ArrowDown') {
+                moveDown();
+            }
+            if (event.code === 'ArrowLeft') {
+                moveLeft();
+            }
+            if (event.code === 'ArrowRight') {
+                moveRight();
+            }
         }
     }
 });
 
+function wait() {
+    document.getElementById("gameText").innerHTML = "You have skipped to the next round!";
+    nextRound();
+}
+
+function moveUp() {
+    document.getElementById("gameText").innerHTML = "You have moved 1 space up!";
+    movePlayer(playerX, playerY - 1);
+}
+
+function moveDown() {
+    document.getElementById("gameText").innerHTML = "You have moved 1 space up!";
+    movePlayer(playerX, playerY + 1);
+}
+
+function moveLeft() {
+    document.getElementById("gameText").innerHTML = "You have moved 1 space up!";
+    movePlayer(playerX - 1, playerY);
+}
+
+function moveRight() {
+    document.getElementById("gameText").innerHTML = "You have moved 1 space up!";
+    movePlayer(playerX + 1, playerY);
+}
+
 function getCandy() {
-    for (var i = 0; i < candy.length; i++) {
-        if (candy[i].X === playerX && candy[i].Y === playerY) {
-            candy[i].obtained = true;
-            candiesObtained++;
+    if (!haunted) {
+        for (var i = 0; i < candy.length; i++) {
+            if (candy[i].X === playerX && candy[i].Y === playerY && candy[i].obtained === false) {
+                candy[i].obtained = true;
+                candiesObtained++;
+                document.getElementById("candies").innerHTML = "You need " + (candy.length - candiesObtained) + " more candies to win!";
+            }
         }
+        if (candiesObtained === candy.length) {
+            allCandiesObtained = true;
+            document.getElementById("gameText").innerHTML = "You won Haunter's Haunted House!";
+            document.getElementById("moves").innerHTML = "";
+            document.getElementById("candies").innerHTML = "";
+        }
+    } else {
+        document.getElementById("candies").innerHTML = "";
     }
 }
 
@@ -522,13 +556,19 @@ function nextRound() {
     checkButtons();
     generateMap();
     movesLeft = 3;
+    if (!haunted && !allCandiesObtained) {
+        document.getElementById("moves").innerHTML = "You have " + movesLeft + " moves left until the next round!";
+    } else {
+        document.getElementById("moves").innerHTML = "";
+    }
     extraGhostMoves = 0;
 }
 
 function init() {
     generateMap();
-    document.getElementById("gameText").innerHTML = "Welcome to Haunter's Haunted House! Use the arrow keys (or the buttons) to move around, and use Enter to start the next round, which will allow the ghosts to move. <a href=\"https://tinyurl.com/hhhguide2020\">Click here</a> for a guide to this game.";
+    document.getElementById("gameText").innerHTML = "Welcome to Haunter's Haunted House! <br>Use the arrow keys (or the buttons) to move around, <br>and use Enter to start the next round, <br>which will allow the ghosts to move. <br>Unlike the regular game, there is no frenzy after 10 rounds. <br><a href=\"https://tinyurl.com/hhhguide2020\">Click here</a> for a guide to this game.";
     document.getElementById("moves").innerHTML = "You have " + movesLeft + " moves left until the next round!";
+    document.getElementById("candies").innerHTML = "You need " + (candy.length - candiesObtained) + " more candies to win!";
 }
 
 init();

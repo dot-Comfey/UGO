@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
 	<body>
+		<button type = "button" onclick = "wait()">Wait</button>
+		<button type = "button" onclick = "moveUp()">Up</button>
+		<button type = "button" onclick = "moveDown()">Down</button>
+		<button type = "button" onclick = "moveLeft()">Left</button>
+		<button type = "button" onclick = "moveRight()">Right</button>
         <center>
-			<canvas id="hhh" width="1300" height="1300" style="border: 1px solid #000000;
-			max-height: 30%; 
-			max-width: 30%; ">
-			</canvas>
-			<p id="gameText"></p>
-			<p id="moves"></p>
+			<div style="text-align:center;width: 100%;height: 100%;">
+				<canvas id="hhh" width="1300" height="1300" style="border: 1px solid #000000;
+				max-height: 100%; 
+				max-width: 100%;
+				padding: 0; 
+				margin:auto; 
+				display: block; 
+				position: absolute; 
+				top: 0; 
+				bottom: 0; 
+				left: 0; 
+				right: 0; 
+				box-sizing: border-box;">
+				</canvas>
+			</div>
 		</center>
+		<p id="gameText"></p>
+		<p id="moves"></p>
+		<p id="candies"></p>
         <script src = "hhh.js"></script>
 	</body>
 </html>
