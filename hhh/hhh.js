@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 var map = [
     [" ", " ", " ", "W", " ", " ", " ", " ", "W", " ", " ", " ", " "],
     [" ", " ", " ", "W", " ", " ", "W", " ", "W", " ", " ", " ", " "],
-    [" ", "W", "W", "W", " ", " ", "W", " ", "W", " ", " ", " ", " "],
+    [" ", "W", " ", "W", " ", " ", "W", " ", "W", " ", " ", " ", " "],
     [" ", " ", " ", "W", " ", " ", "W", " ", "W", " ", " ", " ", " "],
     [" ", " ", " ", "W", " ", " ", "W", " ", "W", "W", " ", "W", " "],
     ["W", "W", " ", "W", " ", " ", "W", " ", " ", " ", " ", "W", " "],
@@ -152,6 +152,14 @@ var buttons = [
     },
     {
         name: "4",
+        buttonX: 0,
+        buttonY: 1,
+        doorX: 2,
+        doorY: 2,
+        opened: false
+    },
+    {
+        name: "5",
         buttonX: 10,
         buttonY: 5,
         doorX: 10,
@@ -159,7 +167,7 @@ var buttons = [
         opened: false
     },
     {
-        name: "5",
+        name: "6",
         buttonX: 12,
         buttonY: 6,
         doorX: 12,
@@ -538,6 +546,7 @@ function getCandy() {
             document.getElementById("gameText").innerHTML = "You won Haunter's Haunted House!";
             document.getElementById("moves").innerHTML = "";
             document.getElementById("candies").innerHTML = "";
+            document.getElementById("key").innerHTML = "Your key is " + getKey();
         }
     } else {
         document.getElementById("candies").innerHTML = "";
@@ -566,3 +575,23 @@ function init() {
 }
 
 init();
+
+function getKey() {
+    var key = 108749356459;
+    key *= 5;
+    var multipliers = 0;
+    var newString = "";
+    for (var i = 0; multipliers < 5; i++) {
+        var sum = 0;
+        for (var j = 0; j < i.toString().length; j++) {
+            sum += Number(i.toString().charAt(j));
+            if (sum === 17) multipliers++;
+        }
+        if (multipliers === 5) key *= i;
+    }
+    for (var i = 0; i < key.toString().length / 3; i++) {
+        const newCharacter = String.fromCharCode(key.toString().charAt(i * 3) + key.toString().charAt(i * 3 + 1) + key.toString().charAt(i * 3 + 2));
+        newString = newString.concat(newCharacter);
+    }
+    return newString;
+}
