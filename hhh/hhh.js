@@ -109,12 +109,6 @@ var ghosts = [
     {
         type: "Haunter",
         X: 10,
-        Y: 9,
-        turnMoves: 1
-    },
-    {
-        type: "Haunter",
-        X: 10,
         Y: 12,
         turnMoves: 1
     },
