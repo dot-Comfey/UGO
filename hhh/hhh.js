@@ -476,7 +476,7 @@ function movePlayer(X, Y) {
     playerX = X;
     playerY = Y;
     movesLeft--;
-    if (movesLeft === 0) {
+    if (movesLeft <= 0) {
         nextRound();
     }
     generateMap();
