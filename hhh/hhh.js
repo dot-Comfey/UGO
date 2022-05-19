@@ -518,17 +518,17 @@ function moveUp() {
 }
 
 function moveDown() {
-    document.getElementById("gameText").innerHTML = "You have moved 1 space up!";
+    document.getElementById("gameText").innerHTML = "You have moved 1 space down!";
     movePlayer(playerX, playerY + 1);
 }
 
 function moveLeft() {
-    document.getElementById("gameText").innerHTML = "You have moved 1 space up!";
+    document.getElementById("gameText").innerHTML = "You have moved 1 space left!";
     movePlayer(playerX - 1, playerY);
 }
 
 function moveRight() {
-    document.getElementById("gameText").innerHTML = "You have moved 1 space up!";
+    document.getElementById("gameText").innerHTML = "You have moved 1 space right!";
     movePlayer(playerX + 1, playerY);
 }
 
