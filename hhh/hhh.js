@@ -486,23 +486,21 @@ function movePlayer(X, Y) {
 document/*.getElementById("guess")*/
     .addEventListener("keyup", function(event) {
     event.preventDefault();
-    if (allCandiesObtained === false) {
-        if (haunted === false) {
-            if (event.code === 'Enter') {
-                wait();
-            }
-            if (event.code === 'ArrowUp') {
-                moveUp();
-            }
-            if (event.code === 'ArrowDown') {
-                moveDown();
-            }
-            if (event.code === 'ArrowLeft') {
-                moveLeft();
-            }
-            if (event.code === 'ArrowRight') {
-                moveRight();
-            }
+    if (!allCandiesObtained && !haunted) {
+        if (event.code === 'Enter') {
+            wait();
+        }
+        if (event.code === 'ArrowUp') {
+            moveUp();
+        }
+        if (event.code === 'ArrowDown') {
+            moveDown();
+        }
+        if (event.code === 'ArrowLeft') {
+            moveLeft();
+        }
+        if (event.code === 'ArrowRight') {
+            moveRight();
         }
     }
 });
@@ -537,8 +535,11 @@ function getCandy() {
         for (var i = 0; i < candy.length; i++) {
             if (candy[i].X === playerX && candy[i].Y === playerY && candy[i].obtained === false) {
                 candy[i].obtained = true;
-                candiesObtained++;
-                document.getElementById("candies").innerHTML = "You need " + (candy.length - candiesObtained) + " more candies to win!";
+                candiesObtained = 0;
+                for (var i = 0; i < candy.length; i++) {
+                    if (candy[i].obtained) candiesObtained++;
+                }
+                document.getElementById("candies").innerHTML = "You need " + (candy.length - candiesObtained) + " more " + (candy.length - candiesObtained === 1 ? "candy" : "candies") + " to win!";
             }
         }
         if (candiesObtained === candy.length) {
@@ -546,7 +547,7 @@ function getCandy() {
             document.getElementById("gameText").innerHTML = "You won Haunter's Haunted House!";
             document.getElementById("moves").innerHTML = "";
             document.getElementById("candies").innerHTML = "";
-            document.getElementById("key").innerHTML = "Your key is " + getKey();
+            document.getElementById("key").innerHTML = "Your key is " + getKey(108749356459);
         }
     } else {
         document.getElementById("candies").innerHTML = "";
@@ -576,8 +577,7 @@ function init() {
 
 init();
 
-function getKey() {
-    var key = 108749356459;
+function getKey(key) {
     key *= 5;
     var multipliers = 0;
     var newString = "";
