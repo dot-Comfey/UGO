@@ -201,6 +201,7 @@ var extraGhostMoves = 0;
 var ghostDisplay = [];
 var candiesObtained = 0;
 var allCandiesObtained = false;
+var rounds = 1;
 
 function generateMap() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -480,7 +481,7 @@ function movePlayer(X, Y) {
         nextRound();
     }
     generateMap();
-    if (!haunted) document.getElementById("moves").innerHTML = "You have " + movesLeft + " moves left until the next round!";
+    if (!haunted) document.getElementById("moves").innerHTML = "Round " + rounds + ": You have " + movesLeft + " moves left until the next round!";
 }
 
 document/*.getElementById("guess")*/
@@ -561,7 +562,8 @@ function nextRound() {
     generateMap();
     movesLeft = 3;
     if (!haunted && !allCandiesObtained) {
-        document.getElementById("moves").innerHTML = "You have " + movesLeft + " moves left until the next round!";
+        rounds++;
+        document.getElementById("moves").innerHTML = "Round " + rounds + ": You have " + movesLeft + " moves left until the next round!";
     } else {
         document.getElementById("moves").innerHTML = "";
     }
@@ -571,7 +573,7 @@ function nextRound() {
 function init() {
     generateMap();
     document.getElementById("gameText").innerHTML = "Welcome to Haunter's Haunted House! <br>Use the arrow keys (or the buttons) to move around, <br>and use Enter to start the next round, <br>which will allow the ghosts to move. <br>Unlike the regular game, there is no frenzy after 10 rounds. <br><a href=\"https://tinyurl.com/hhhguide2020\">Click here</a> for a guide to this game.";
-    document.getElementById("moves").innerHTML = "You have " + movesLeft + " moves left until the next round!";
+    document.getElementById("moves").innerHTML = "Round " + rounds + ": You have " + movesLeft + " moves left until the next round!";
     document.getElementById("candies").innerHTML = "You need " + (candy.length - candiesObtained) + " more candies to win!";
 }
 
